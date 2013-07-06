@@ -63,14 +63,10 @@ void setup() {
    * Create the 3D canvas to draw on.
    */
   canvas = new Canvas3D(FOCAL_LENGTH, INTERACTION_DISTANCE);
-  spark = new Particle(random(256), random(256), random(256));
+  spark = new Particle(canvas.toModelCoordinates(mouseX, mouseY), random(256), random(256), random(256));
 }
 
 void mouseMoved() {
-  /*
-   * Convert the prior and current mouse screen coordinates to model coordinates.
-   */
-  PVector prior = canvas.toModelCoordinates(pmouseX, pmouseY);
   PVector current = canvas.toModelCoordinates(mouseX, mouseY);
 
   /*
@@ -82,15 +78,7 @@ void mouseMoved() {
      * points, randomized a bit to create a "spray" effect and scaled by the elapsed
      * time.
      */
-    PVector velocity = PVector.sub(current, prior);
-    velocity.add(new PVector(random(-SPRAY_SPREAD, SPRAY_SPREAD), 0, random(-SPRAY_SPREAD, SPRAY_SPREAD)/* * velocity.x*/));
-    velocity.mult(1.0 / averageElapsedMillis);
-
-    /*
-     * Set the spark's intital motion and queue up the next particle.
-     */
-    spark.initializeMotion(current, velocity);
-    spark.evolve(averageElapsedMillis);
+    spark.move(current);
   }
 }
 long lastFrameDrawn = millis();

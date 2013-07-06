@@ -90,11 +90,6 @@ public class Particle {
   private PVector location;
 
   /*
-   * The Particle's velocity.
-   */
-  private PVector velocity;
-
-  /*
    * The Particle's color.
    */
   private color c;
@@ -102,28 +97,9 @@ public class Particle {
   /**
    * Create a Particle with a specified color and characteristic sound.
    */
-  public Particle(float red, float green, float blue) {
-    this.c = color(red, green, blue);
-  }
-
-  /**
-   * Initialize or reset all variables describing the motion of the particle to
-   * the specified values.
-   */
-  public void initializeMotion(PVector location, PVector velocity) {
+  public Particle(PVector location, float red, float green, float blue) {
     this.location = location;
-    this.velocity = velocity;
-  }
-
-  /**
-   * Returns true if the Particle should still be actively evolving in time.
-   */
-  public boolean isActive() {
-    /*
-     * We will consider the Particle active as long as it is on the other side
-     * of the screen than the viewer. 
-     */
-    return location != null && location.z >= FOCAL_LENGTH;
+    this.c = color(red, green, blue);
   }
 
   /*
@@ -150,50 +126,9 @@ public class Particle {
     drawMotionBright(from, to, 8, 255);
   }
 
-  /*
-   * Various functions to determine the direction of the Particle's motion.
-   */
-
-  private boolean isMovingLeft() {
-    return velocity.x <= -TOLERANCE;
-  }
-
-  private boolean isMovingRight() {
-    return velocity.x >= TOLERANCE;
-  }
-
-  private boolean isMovingUp() {
-    return velocity.y <= -TOLERANCE;
-  }
-
-  private boolean isMovingDown() {
-    return velocity.y >= TOLERANCE;
-  }
-
-  private boolean isMovingVertically() {
-    return isMovingUp() || isMovingDown();
-  }
-
-  /*
-   * Give the particle an inactive status, indicating it no longer needs to be
-   * evolved in time.
-   */
-  private void deactivate() {
-    location.z = 0;
-  }
-
-  public void evolve(float elapsedMillis) {
-    /*
-     * Deactivate the particle if it has settled into the ground.
-     */
-    if (location.y > height && velocity.y > 0) {
-      deactivate();
-      return;
-    }
-    PVector to = PVector.add(location, PVector.mult(velocity, elapsedMillis));
+  public void move(PVector to) {
     paint(location, to);
     location = to;
-    velocity.y += GRAVITY;
   }
 }
 
