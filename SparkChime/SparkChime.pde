@@ -18,11 +18,11 @@ void setup() {
   /*
    * Create the 3D canvas to draw on.
    */
-  spark = new Particle(PVector(mouseX, mouseY), random(256), random(256), random(256));
+  spark = new Particle(new PVector(float(mouseX), float(mouseY)), random(256), random(256), random(256));
 }
 
 void mouseMoved() {
-  PVector current = PVector(mouseX, mouseY);
+  PVector current = new PVector(float(mouseX), float(mouseY));
 
   /*
    * If the interaction point is above the ground, create a spark.

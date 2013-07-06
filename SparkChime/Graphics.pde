@@ -75,12 +75,12 @@ public class Particle {
    */
   private void drawMotion(PVector from, PVector to, float weight, float opacity) {
     stroke(c, opacity);
-    canvas.drawLine(from, to, weight);
+    drawLine(from, to, weight);
   }
 
   private void drawMotionBright(PVector from, PVector to, float weight, float opacity) {
     stroke(amplifyColor(c), opacity);
-    canvas.drawLine(from, to, weight);
+    drawLine(from, to, weight);
   }
 
   private void paint(PVector from, PVector to) {
