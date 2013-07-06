@@ -9,64 +9,30 @@
  *
  * @author Gregory Bush
  */
-public class Canvas3D {
-  private final float focalLength;
-  private final float interactionPlane;
-
-  public Canvas3D(float focalLength, float interactionPlane) {
-    this.focalLength = focalLength;
-    this.interactionPlane = interactionPlane;
-  }
-
-  /**
-   * Convert a point in the 3D model to a point on the 2D screen.
-   */
-  public PVector toScreenCoordinates(PVector p) {
-    float scale = focalLength / p.z;
-    return new PVector(p.x * scale + width / 2, p.y * scale + height / 2);
-  }
-
-  /**
-   * Convert a point on the 2D screen to a point in the 3D model, projected on
-   * the interaction plane.
-   */
-  public PVector toModelCoordinates(float x, float y) {
-    float scale = interactionPlane / focalLength;
-    return new PVector((x - width / 2) * scale, (y - height / 2) * scale, interactionPlane);
-  }
-
-  /**
-   * Scale the diameter of a sphere whose center is at a particular Z distance to
-   * its diameter on the screen.
-   */
-  public float scaleToScreen(float diameter, float distance) {
-    return diameter * focalLength / distance;
-  }
-
-  private void drawLine(PVector from, PVector to) {
-    line(from.x, from.y, to.x, to.y);
-  }
-
-  private void drawPoint(PVector p) {
-    point(p.x, p.y);
-  }
-
-  /**
-   * Draw a line between 3D points.
-   */
-  public void drawLine(PVector from, PVector to, float weight) {
-    strokeWeight(scaleToScreen(weight, to.z));
-    drawLine(toScreenCoordinates(from), toScreenCoordinates(to));
-  }
-
-  /**
-   * Draw a point in 3D.
-   */
-  public void drawPoint(PVector p, float weight) {
-    strokeWeight(scaleToScreen(weight, p.z));
-    drawPoint(toScreenCoordinates(p));
-  }
+private void drawLine(PVector from, PVector to) {
+  line(from.x, from.y, to.x, to.y);
 }
+
+private void drawPoint(PVector p) {
+   point(p.x, p.y);
+  }
+
+/**
+ * Draw a line between 3D points.
+ */
+public void drawLine(PVector from, PVector to, float weight) {
+  strokeWeight(weight);
+  drawLine(from, to);
+}
+
+/**
+ * Draw a point in 3D.
+ */
+public void drawPoint(PVector p, float weight) {
+  strokeWeight(weight);
+  drawPoint(p);
+}
+
 /**
  * Increase the intensity of a color value.
  */

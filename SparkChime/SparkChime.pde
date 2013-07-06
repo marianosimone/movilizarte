@@ -5,50 +5,6 @@
  * @author Gregory Bush
  */
 
-
-
-/*
- * The variation in velocity of newly-created sparks.
- */
-float SPRAY_SPREAD = 10.0;
-
-/*
- * Some predefined gravity settings to play with.
- */
-float EARTH_GRAVITY = 1.0 / 16.0;
-float MOON_GRAVITY = EARTH_GRAVITY / 6.0;
-float JUPITER_GRAVITY = EARTH_GRAVITY * 2.5;
-
-/*
- * The amount of acceleration due to gravity.
- */
-float GRAVITY = EARTH_GRAVITY;
-
-/*
- * The amount of error allowed in model coordinate measurements.  Lowering
- * this will let sparks have tiny bounces longer.
- */
-float TOLERANCE = 0.2;
-
-/**
- * The focal length from the viewer to the screen in model coordinates.
- */
-float FOCAL_LENGTH = 1000.0;
-
-/**
- * The distance in model coordinates from the viewer to where new sparks are
- * created.  Increasing this number will move the created sparks further away.
- */
-float INTERACTION_DISTANCE = 4 * FOCAL_LENGTH;
-
-/*
- * A custom 3D canvas used to draw the world.
- */
-Canvas3D canvas;
-
-/*
- * A collection of Particles that represent the spraying sparks.
- */
 Particle spark;
 
 /**
@@ -62,12 +18,11 @@ void setup() {
   /*
    * Create the 3D canvas to draw on.
    */
-  canvas = new Canvas3D(FOCAL_LENGTH, INTERACTION_DISTANCE);
-  spark = new Particle(canvas.toModelCoordinates(mouseX, mouseY), random(256), random(256), random(256));
+  spark = new Particle(PVector(mouseX, mouseY), random(256), random(256), random(256));
 }
 
 void mouseMoved() {
-  PVector current = canvas.toModelCoordinates(mouseX, mouseY);
+  PVector current = PVector(mouseX, mouseY);
 
   /*
    * If the interaction point is above the ground, create a spark.
@@ -98,22 +53,11 @@ void draw() {
   long elapsedMillis = now - lastFrameDrawn;
   lastFrameDrawn = now;
   averageElapsedMillis = .90 * averageElapsedMillis + .10 * elapsedMillis;
-
   /*
    * Fade the screen's current contents a bit more toward black.
    */
   noStroke();    
   fill(0, 0, 0, constrain(2 * elapsedMillis, 0, 255));
   rect(0, 0, width, height);
-
-  /*
-   * Draw any active sparks and evolve them the amount of passed time
-   * since the last frame was drawn.
-   *
-   * TODO: I'd like to draw these z-ordered from furthest to
-   * closest, but the built-in Processing sorts don't
-   * facilitate this.
-   */
-  //spark.evolve(elapsedMillis);
 }
 
