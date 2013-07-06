@@ -11,7 +11,6 @@
  */
 public class Canvas3D {
   private final float focalLength;
-
   private final float interactionPlane;
 
   public Canvas3D(float focalLength, float interactionPlane) {
@@ -24,7 +23,6 @@ public class Canvas3D {
    */
   public PVector toScreenCoordinates(PVector p) {
     float scale = focalLength / p.z;
-
     return new PVector(p.x * scale + width / 2, p.y * scale + height / 2);
   }
 
@@ -34,7 +32,6 @@ public class Canvas3D {
    */
   public PVector toModelCoordinates(float x, float y) {
     float scale = interactionPlane / focalLength;
-
     return new PVector((x - width / 2) * scale, (y - height / 2) * scale, interactionPlane);
   }
 
@@ -69,24 +66,7 @@ public class Canvas3D {
     strokeWeight(scaleToScreen(weight, p.z));
     drawPoint(toScreenCoordinates(p));
   }
-
-  /**
-   * Draw a circle with vertical normal vector.
-   */
-  public void drawHorizontalCircle(PVector center, float radius, float weight) {
-    float screenRadius = canvas.scaleToScreen(radius, center.z);
-    PVector p = toScreenCoordinates(center);
-    PVector back = toScreenCoordinates(PVector.add(center, new PVector(0, 0, radius)));
-    float aspect = (back.y - p.y) * 2;
-    
-    /*
-     * A reasonably good approximation of a circle in persepective.
-     */
-    strokeWeight(scaleToScreen(weight, center.z));    
-    ellipse(p.x, p.y, screenRadius, aspect);
-  }
 }
-
 /**
  * Increase the intensity of a color value.
  */
@@ -170,39 +150,6 @@ public class Particle {
     drawMotionBright(from, to, 8, 255);
   }
 
-  private PVector flip(PVector v) {
-    return new PVector(v.x, height + 2 * (height - v.y), v.z);
-  }
-
-  private void paintReflection(PVector from, PVector to) {
-    from = flip(from);
-    to = flip(to);
-
-    drawMotion(from, to, 32, 4);
-    drawMotionBright(from, to, 8, 8);
-  }
-
-  /*
-   * Draw the splash when the Particle strikes the ground and play the
-   * Particle's characteristic note if sound is enabled.
-   */
-  private void splash(PVector to) {
-    /*
-     * The splash is a circle on the ground with dim illumination in its
-     * interior and a bright ring on its circumference.
-     */
-    stroke(c, 128);
-    fill(c, 64);
-    canvas.drawHorizontalCircle(to, 128, 8);
-
-    /*
-     * At the point where the Particle touched the ground, draw a small
-     * but bright flash of light.
-     */
-    stroke(255, 255, 255, 255);
-    canvas.drawPoint(to, 8);
-  }
-
   /*
    * Various functions to determine the direction of the Particle's motion.
    */
@@ -243,38 +190,9 @@ public class Particle {
       deactivate();
       return;
     }
-
-    for (;;) {
-      /*
-       * Determine if the Particle collided with the ground.  If so, determine
-       * where and when it collided.
-       */
-      boolean collided;
-      float collisionMillis = (height - location.y) / velocity.y;
-
-      PVector to;
-      if (collisionMillis > 0 && collisionMillis < elapsedMillis) {
-        to = PVector.add(location, PVector.mult(velocity, collisionMillis));
-        elapsedMillis -= collisionMillis + 1;
-        
-  
-      } 
-      else {
-        to = PVector.add(location, PVector.mult(velocity, elapsedMillis));
-        collided = false;
-      }
-
-      paint(location, to);
-
-      location = to;
-      
-
-        break;
-    }
-
-    /*
-     * Apply the accleration due to gravity.
-     */
+    PVector to = PVector.add(location, PVector.mult(velocity, elapsedMillis));
+    paint(location, to);
+    location = to;
     velocity.y += GRAVITY;
   }
 }

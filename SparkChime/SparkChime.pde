@@ -51,16 +51,6 @@ Canvas3D canvas;
  */
 Particle spark;
 
-/*
- * The index of the Particle to use for the next spark created.
- */
-int nextSpark = 0;
-
-/*
- * The number of drag events that have passed without emitting a spark.
- */
-int skipCount = 0;
-
 /**
  * Perform initial setup needed for the sketch.
  *
@@ -100,7 +90,7 @@ void mouseMoved() {
      * Set the spark's intital motion and queue up the next particle.
      */
     spark.initializeMotion(current, velocity);
-    spark.evolve(1);
+    spark.evolve(averageElapsedMillis);
   }
 }
 long lastFrameDrawn = millis();
