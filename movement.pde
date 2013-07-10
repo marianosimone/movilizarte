@@ -1,4 +1,10 @@
-abstract class PositionProviderThread extends Thread {
+interface PositionProvider {
+  Point getPosition();
+  void begin();
+  void quit();
+}
+
+abstract class PositionProviderThread extends Thread implements PositionProvider {
 
   boolean running;
   int wait;  // How many milliseconds should we wait in between executions?
@@ -13,6 +19,7 @@ abstract class PositionProviderThread extends Thread {
     println("Starting " + this); 
     super.start();
   }
+  void begin() { start(); }
 
   void run() {
     while (running) {

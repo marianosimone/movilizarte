@@ -1,14 +1,7 @@
-/******************************************************************************
- * A rudimentary 3D graphics library.
- *
- * @author Gregory Bush
+/*
+ * Based on SparkChime, by Gregory Bush
  */
 
-/**
- * A Canvas3D allows drawing graphics primitives in a 3D coordinate system.
- *
- * @author Gregory Bush
- */
 private void drawLine(PVector from, PVector to) {
   line(from.x, from.y, to.x, to.y);
 }
@@ -17,17 +10,11 @@ private void drawPoint(PVector p) {
    point(p.x, p.y);
   }
 
-/**
- * Draw a line between 3D points.
- */
 public void drawLine(PVector from, PVector to, float weight) {
   strokeWeight(weight);
   drawLine(from, to);
 }
 
-/**
- * Draw a point in 3D.
- */
 public void drawPoint(PVector p, float weight) {
   strokeWeight(weight);
   drawPoint(p);
@@ -44,28 +31,13 @@ color amplifyColor(color c) {
   return color(amplify(red(c)), amplify(green(c)), amplify(blue(c)));
 }
 
-/******************************************************************************
- * A Particle is a representation of a bouncing, colored spark
- *
- * @author Gregory Bush
- */
 public class Particle {
-  /*
-   * The coordinates of the Particle's current location.
-   */
   private PVector location;
-
-  /*
-   * The Particle's color.
-   */
   private color c;
 
-  /**
-   * Create a Particle with a specified color and characteristic sound.
-   */
-  public Particle(PVector location, float red, float green, float blue) {
+  public Particle(PVector location, color c) {
     this.location = location;
-    this.c = color(red, green, blue);
+    this.c = c;
   }
 
   /*
