@@ -4,7 +4,8 @@ void setup() {
   size(640, 480);
   reps = new ArrayList<PositionRepresentation>();
   reps.add(new TextPositionRepresentation(new MousePositionProvider(), 10, 20));
-  reps.add(new SparkPositionRepresentation(new MousePositionProvider(), color(random(256), random(256), random(256))));
+  reps.add(new SparkPositionRepresentation(new MousePositionProvider(), color(random(256), random(256), random(256)), 0));
+  reps.add(new SparkPositionRepresentation(new MousePositionProvider(), color(random(256), random(256), random(256)), 20));
   for (final PositionRepresentation rep : reps) {
     rep.begin();
   }
