@@ -40,10 +40,10 @@ void draw() {
     }
   }
 }
+
 void serverEvent(Server server, Client client) {
   println("New client from " + client.ip());
-  PositionRepresentation rep = new SparkPositionRepresentation(new NetworkPositionProvider(client), color(random(256), random(256), random(256)), 20);
-  //reps.add(new SparkPositionRepresentation(new MousePositionProvider(), color(random(256), random(256), random(256)), 20));
+  PositionRepresentation rep = new SparkPositionRepresentation(new NetworkPositionProvider(client), color(random(256), random(256), random(256)));
   reps.add(rep);
   rep.begin();
 }

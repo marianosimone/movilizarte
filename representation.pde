@@ -37,16 +37,17 @@ class TextPositionRepresentation extends PositionRepresentation {
 */
 class SparkPositionRepresentation extends PositionRepresentation {
   final Particle spark;
-  final int modifier;
-  SparkPositionRepresentation(final PositionProvider provider, final color c, final int modifier) {
+
+  SparkPositionRepresentation(final PositionProvider provider, final color c) {
     super(provider);
     spark = new Particle(new PVector(0, 0), c);
-    this.modifier = modifier;
   }
 
   void represent() {
     Point pos = provider.getPosition();
-    PVector current = new PVector(float(pos.x+modifier), float(pos.y+modifier));
-    spark.move(current);
+    if (pos != null) {
+      PVector current = new PVector(float(pos.x), float(pos.y));
+      spark.move(current);
+    }
   }     
 }

@@ -71,11 +71,11 @@ class NetworkPositionProvider implements PositionProvider {
       if (data != null) {
         String[] splitted = data.split(",");
         if (splitted.length == 3) {
-           lastPoint = new Point(int(splitted[0]), int(splitted[1]), int(splitted[2]));
+           return new Point(int(splitted[0]), int(splitted[1]), int(splitted[2]));
         }
       }
     }
-    return lastPoint;
+    return null;
   }
   
   void begin() {}
