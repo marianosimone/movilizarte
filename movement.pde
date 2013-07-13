@@ -56,3 +56,31 @@ class MousePositionProvider extends PositionProviderThread {
     return new Point(mouseX, mouseY, int(random(0,100)));
   }
 }
+
+class NetworkPositionProvider implements PositionProvider {
+  final Client client;
+  Point lastPoint = new Point(0,0,0);
+
+  public NetworkPositionProvider(Client client) {
+    this.client = client;
+  }
+
+  public Point getPosition() {
+    if (client.available() > 0) {
+      final String data = client.readStringUntil(10);
+      if (data != null) {
+        String[] splitted = data.split(",");
+        if (splitted.length == 3) {
+           lastPoint = new Point(int(splitted[0]), int(splitted[1]), int(splitted[2]));
+        }
+      }
+    }
+    return lastPoint;
+  }
+  
+  void begin() {}
+
+  void quit() {
+    this.client.stop();  
+  }
+}
