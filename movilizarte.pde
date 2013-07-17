@@ -8,7 +8,6 @@ void setup() {
   size(640, 480);
   reps = new ArrayList<PositionRepresentation>();
   server = new Server(this, 5204);
-
   Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
     public void run() {
       running = false;
