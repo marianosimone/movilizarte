@@ -12,24 +12,28 @@ APWidgetContainer widgetContainer;
 APEditText textField;
 APButton button;
 String message;
+int margin;
 
 void setup() {
-  size(768, 1024); 
+  size(displayWidth, displayHeight); 
+  margin = displayWidth/18;
+  println(displayWidth);
+  println(displayHeight);
   background(0);
   widgetContainer = new APWidgetContainer(this); //create new container for widgets
-  textField = new APEditText(20, 20, 200, 70); //create a textfield from x- and y-pos., width and height
-  button = new APButton(230, 20, "Connect");
+  textField = new APEditText(margin, margin, displayWidth/2, 2*margin); //create a textfield from x- and y-pos., width and height
+  button = new APButton(displayWidth/2+2*margin, margin, "Connect");
   widgetContainer.addWidget(textField);
   widgetContainer.addWidget(button);
   message = "Waiting to connect...";
-  textSize(32);
+  textSize(margin);
 }
 
 void draw() {
   fill(0);
   rect(0, 0, width, height);
   fill(255);
-  text(message, 10, 150, width-20, height-150);  // Text wraps within text box
+  text(message, margin, margin*3, width-margin, height-margin);  // Text wraps within text box
 }
 
 Socket connect(final String address) throws UnknownHostException, IOException {
@@ -37,10 +41,10 @@ Socket connect(final String address) throws UnknownHostException, IOException {
   return new Socket(serverAddr, 5204);
 }
 
-void mousePressed() {
+void mouseDragged() {
   if (server != null) {
     try {
-      server.getOutputStream().write("1,100,2\n".getBytes());
+      server.getOutputStream().write((mouseX + "," + mouseY + ",2\n").getBytes());
     } catch (Exception e) {
       println(e);
       throw new RuntimeException(e);
@@ -80,6 +84,7 @@ class ConnectToServerTask extends AsyncTask<String, Void, Socket> {
     if (socket != null) {
       server = socket;
       message = "Connected";
+      button.setText("Disconnect");
     }
     if (exception != null) {
       message = "Couldn't connect to server: " + exception.getMessage();
@@ -104,6 +109,7 @@ class DisconnectTask extends AsyncTask<Socket, Void, Void> {
   protected void onPostExecute(Void v) {
     if (exception == null) {
       message = "Waiting to connect...";
+      button.setText("Connect");
     } else {
       message = "Couldn't disconnect from server: " + exception.getMessage();
     }
