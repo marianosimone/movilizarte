@@ -17,8 +17,6 @@ int margin;
 void setup() {
   size(displayWidth, displayHeight); 
   margin = displayWidth/18;
-  println(displayWidth);
-  println(displayHeight);
   background(0);
   widgetContainer = new APWidgetContainer(this); //create new container for widgets
   textField = new APEditText(margin, margin, displayWidth/2, 2*margin); //create a textfield from x- and y-pos., width and height
@@ -70,9 +68,7 @@ class ConnectToServerTask extends AsyncTask<String, Void, Socket> {
 
   protected Socket doInBackground(String... address) {
     try {
-      println("Going to connect to " + address[0]);
-      return connect("192.168.2.5");
-      //return connect(address[0]);
+      return connect(address[0]);
     } catch (Exception e) {
       e.printStackTrace();
       this.exception = e;
@@ -83,8 +79,14 @@ class ConnectToServerTask extends AsyncTask<String, Void, Socket> {
   protected void onPostExecute(Socket socket) {
     if (socket != null) {
       server = socket;
-      message = "Connected";
-      button.setText("Disconnect");
+      try {
+        server.getOutputStream().write((width + "," + height + "\n").getBytes());
+        message = "Connected";
+        button.setText("Disconnect");
+      } catch (Exception e) {
+        exception = e;
+      }
+      
     }
     if (exception != null) {
       message = "Couldn't connect to server: " + exception.getMessage();
