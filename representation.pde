@@ -46,8 +46,6 @@ class SparkPositionRepresentation extends PositionRepresentation {
   void represent() {
     Point pos = provider.getPosition();
     if (pos != null) {
-    println(pos.x);
-    println(pos.y);
       PVector current = new PVector(float(pos.x), float(pos.y));
       spark.move(current);
     }

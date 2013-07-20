@@ -5,7 +5,7 @@ Server server;
 boolean running = true;
 
 void setup() {
-  size(640, 480);
+  size(displayWidth, displayHeight);
   reps = new ArrayList<PositionRepresentation>();
   server = new Server(this, 5204);
   Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
